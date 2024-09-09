@@ -10,7 +10,7 @@ D=M
 M=D
 
 @R2
-D=M         // Length of array
+D=M         // D = Length of array
 @END
 D;JLE       // <= 0
 
@@ -24,7 +24,7 @@ M=D         // Current Minimum Stored in R0
 M=1         // From the second element (1)
 
 (LOOP)
-@INDEX      // /* Check if index is 0 */
+@INDEX      // /* Check if loop should stop! */
 D=M
 @R2
 D=D-M
@@ -40,8 +40,7 @@ A=D
 D=M
 
 @R0         // /* Check minimum value */
-A=M
-D=D-A       // Check this, can't use M directly?
+D=D-M       // Check this, can't use M directly?
 @MINNOTFOUND        // Current data value is bigger then current min!
 D;JGE
 
@@ -56,7 +55,7 @@ D=M         // New val
 M=D         // Update R0 to the new minimum
 
 (MINNOTFOUND)
-@COUNTER    // Increment the counter
+@INDEX    // Increment the counter
 M=M+1
 
 @LOOP       // Repeat the loop
