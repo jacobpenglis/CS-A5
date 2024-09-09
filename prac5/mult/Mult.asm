@@ -23,12 +23,12 @@ D;JEQ
 
 // if either val is 0, don't change output R0
 
-@R2          // Check if R2 val if negative
+@R2          // Check if R2 val is positive
 D=M
 @POS
-D;JGT
+D;JGE
 
-D=-D        // Negate negative val
+D=!D        // Negate negative val
 D=D+1
 
 (POS)       // Regardless/Otherwise, initialise, INDEX, or, how many times multiplication needs to occur
@@ -46,7 +46,7 @@ D=M
 @LOOP
 D;JGT
 
-@R1         // Check if R1 is negative (<0)
+@R2         // Check (again) if R2 is negative (<0)
 D=M
 @NEGATE
 D;JLT
@@ -55,9 +55,9 @@ D;JLT
 @END
 0;JMP
 
-(NEGATE)    // Negate final result
+(NEGATE)    // Negate final result (R2 was negative)
 @R0
-M=-M
+M=!M
 M=M+1
 @END
 0;JMP
