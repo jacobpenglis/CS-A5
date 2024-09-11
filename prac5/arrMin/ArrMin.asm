@@ -3,7 +3,6 @@
 
 // Put your code here.
 
-// SLOW IMPLEMENTATION: Literally a for loop
 @R1 
 D=M
 @R3         // Stores current element
