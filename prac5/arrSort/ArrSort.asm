@@ -46,7 +46,7 @@ M=D
 // /* INNER LOOP: 1. Conditional Statement (SWAP), 2. Increment Index, 3. Check Condition for Loop */
 
 (INNERLOOP)
-@R7          // /* CONDITIONAL IF: (arr[j] > arr[j + 1]): SWAP IF TRUE */ (Responsibility 1) 
+@R7                     // /* CONDITIONAL IF: (arr[j] > arr[j + 1]): SWAP IF TRUE */ (Responsibility 1) 
 D=M                     // j
 @R1
 A=M+D                   // Array[j]
@@ -61,18 +61,54 @@ D=M
 @R5                     // R5 = Compare_Value_2
 M=D
 
+
 // Compare Values Proper
 @R4
 D=M
+@CHECK_SAME_POS
+D;JGE                    // A[j] is pos >= 0
+@CHECK_SAME_NEG
+D;JLT                    // A[j] is negative
+
+(CHECK_SAME_POS)
 @R5
-D=D-M                       // WANT: A[j] > A[j+1], if A[j] - A[j+1] < 0, no swap should occur
-@NOSWAP
+D=M
+@DIFFERENT_SIGN_1
+D;JLT                   // Jumps if A[j] is positive and A[j+1] is negative
+@SAME_SIGN
+D;JGE                   // Otherwise, poth positive
+
+(CHECK_SAME_NEG)
+@R5
+D=M
+@DIFFERENT_SIGN_2       // Jumps if A[j] is negative and A[j+1] is positive
+D;JGE
+@SAME_SIGN              // Otherwise, both negative
 D;JLT
 
+// WANT: A[j] > A[j+1], if A[j] - A[j+1] < 0, no swap should occur
+(SAME_SIGN)
+@R4
+D=M
+@R5
+D=D-M
+@NOSWAP
+D;JLE
+@SWAP
+0;JMP
 
-// A[j] < A[j+1] (bad), Swapping!
+(DIFFERENT_SIGN_1)
+@SWAP
+0;JMP
+
+(DIFFERENT_SIGN_2)
+@NOSWAP
+0;JMP
+
+
+// A[j] > A[j+1] (bad), Swapping!
 // Swap 1:
-
+(SWAP)  
 @R7
 D=M                     // j
 @R1
@@ -83,7 +119,7 @@ M=D
 @R5
 D=M
 @R3
-A=M                     // oh my fucking god this took me forever to figure out
+A=M                     // oh my god this took me forever to figure out
 M=D
 
 // Swap 2:
